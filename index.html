@@ -55,7 +55,7 @@
 
         .header h1 {
             margin: 0;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 1.5px;
             color: #2e3e4e;
@@ -63,7 +63,7 @@
 
         .header p {
             margin: 6px 0 0;
-            font-size: 13px;
+            font-size: 11px;
             opacity: 0.85;
             color: #4e5e6e;
         }
@@ -81,7 +81,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-main);
-            font-size: 14px;
+            font-size: 12px;
         }
 
         input[type="number"] {
@@ -100,7 +100,7 @@
         .input-wrapper input {
             width: 100%;
             padding: 14px 15px 14px 40px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             border: 2px solid var(--border-soft);
             border-radius: 18px;
@@ -121,7 +121,7 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: var(--text-muted);
         }
@@ -142,7 +142,7 @@
 
         .rate-prefix {
             padding: 12px 15px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-main);
             border-right: 1px solid var(--border-soft);
@@ -152,7 +152,7 @@
         .rate-wrapper input {
             flex: 1;
             padding: 12px 15px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             border: none;
             background: transparent;
@@ -175,7 +175,7 @@
             background: #fffbf9;
             border-radius: 14px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-main);
             transition: all 0.2s;
             font-weight: 500;
@@ -215,7 +215,7 @@
         .result-header-title {
             background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
             color: #5a3a3a;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             text-align: center;
             padding: 20px 20px 15px 20px;
@@ -231,7 +231,7 @@
             padding: 10px 16px;
             background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
             border-bottom: 2px solid var(--macaron-pink);
-            font-size: 15px;
+            font-size: 13px;
             color: #3a4a4a;
             text-align: center;
         }
@@ -253,14 +253,14 @@
         .meta-info-item .label {
             font-weight: 600;
             color: #4a5a5a;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 4px;
         }
 
         .meta-info-item .value {
             font-weight: 800;
             color: #3a5a7a;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.2;
         }
 
@@ -289,14 +289,14 @@
         }
 
         .result-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             color: #5a4a4a;
             margin-bottom: 4px;
         }
 
         .result-formula-left {
-            font-size: 11px;
+            font-size: 9px;
             color: #a89890;
             line-height: 1.4;
             background: transparent;
@@ -316,14 +316,14 @@
         }
 
         .result-cny {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: #4a7aa8;
             line-height: 1.2;
         }
 
         .result-krw {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -335,13 +335,13 @@
         }
 
         .result-item.highlight .result-title {
-            font-size: 14px;
+            font-size: 12px;
             color: #2e8b6a;
             font-weight: 800;
         }
 
         .result-item.highlight .result-cny {
-            font-size: 24px;
+            font-size: 22px;
             color: #2e8b6a;
         }
 
@@ -351,7 +351,7 @@
 
         .error-text {
             color: var(--accent-color);
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             text-align: center;
             padding: 20px 0;
@@ -369,7 +369,7 @@
             border: none;
             border-radius: 20px;
             padding: 15px 30px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
@@ -429,6 +429,32 @@
             opacity: 0.9;
         }
 
+        /* 图片预览区域 */
+        .image-preview-area {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: #fff7f5;
+            border-radius: 20px;
+            padding: 12px;
+            border: 1px dashed var(--macaron-blue);
+            transition: opacity 0.3s;
+        }
+
+        .image-preview-area img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 6px 14px rgba(180, 190, 240, 0.3);
+            border: 2px solid white;
+        }
+
+        .image-preview-area .preview-label {
+            font-size: 10px;
+            color: #8a7a7a;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -441,7 +467,7 @@
     
     <div class="content">
         <div class="input-group">
-            <label for="rateInput">当前汇率</label>
+            <label for="rateInput">当前汇率（采自Wise）</label>
             <div class="rate-wrapper">
                 <div class="rate-prefix">1 CNY =</div>
                 <input type="number" id="rateInput" step="0.01" placeholder="206.5" oninput="calculate()">
@@ -537,6 +563,12 @@
                 一键出图
             </button>
         </div>
+
+        <!-- 图片预览区域 -->
+        <div class="image-preview-area" id="imagePreviewArea" style="display: none;">
+            <span class="preview-label">📸 预览</span>
+            <img id="previewImage" src="" alt="退税计算结果图">
+        </div>
     </div>
 </div>
 
@@ -567,6 +599,9 @@
     const metaOriginal = document.getElementById('metaOriginal');
     const metaDiscount = document.getElementById('metaDiscount');
     const metaRate = document.getElementById('metaRate');
+
+    const imagePreviewArea = document.getElementById('imagePreviewArea');
+    const previewImage = document.getElementById('previewImage');
 
     rateInputEl.value = defaultRate;
     discountInputEl.value = defaultDiscount;
@@ -698,6 +733,12 @@
         resultsContent.style.display = 'block';
         errorMsg.style.display = 'none';
 
+        // 清空预览（因为结果变化）
+        if (imagePreviewArea.style.display !== 'none') {
+            imagePreviewArea.style.display = 'none';
+            previewImage.src = '';
+        }
+
         if (isNaN(originalAmount) || originalAmount <= 0) {
             finalPriceCny.textContent = "¥ 0.00";
             finalPriceKrw.textContent = "₩ 0";
@@ -780,10 +821,11 @@
             btn.innerHTML = "一键出图";
 
             const imgData = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = `野猪购物返点_退税计算_${new Date().getTime()}.png`;
-            link.href = imgData;
-            link.click();
+            
+            // 显示预览区域（不再自动下载）
+            previewImage.src = imgData;
+            imagePreviewArea.style.display = 'flex';
+
         }).catch(err => {
             console.error("生成图片失败:", err);
             alert("生成图片失败，请检查网络后重试。");
@@ -794,6 +836,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
         calculate();
+        imagePreviewArea.style.display = 'none';
     });
 </script>
 
