@@ -1,532 +1,801 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>百货店返点计算器</title>
-  <style>
-    /* ===== 全局重置 & 字体 ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ye-Zhu TaxFree</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #5b8bb5;
+            --accent-color: #f28b82;
+            --bg-color: #fdf6f2;
+            --card-bg: #ffffff;
+            --text-main: #4a4a4a;
+            --text-muted: #8a8a8a;
+            --success-color: #5fbf9f;
+            --macaron-pink: #ffd1dc;
+            --macaron-blue: #c7e2ff;
+            --macaron-yellow: #fff0b8;
+            --macaron-mint: #c8f0e4;
+            --macaron-lavender: #e5d4ff;
+            --macaron-peach: #ffdbc9;
+            --border-soft: #f0e0da;
+        }
 
-    html {
-      font-size: 16px;
-    }
+        body {
+            font-family: 'Segoe UI', 'Quicksand', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      background: #f3f5f8;
-      font-family: Arial, "Microsoft YaHei", sans-serif;
-      color: #222;
-      padding: 12px;
-    }
+        .calculator-card {
+            background-color: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 16px 36px rgba(240, 180, 170, 0.18);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            border-top: 8px solid var(--macaron-blue);
+            position: relative;
+        }
 
-    .app {
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 0;
-    }
+        .header {
+            background: linear-gradient(135deg, #c7e2ff 0%, #e5d4ff 100%);
+            color: #3a4a5a;
+            padding: 22px 20px;
+            text-align: center;
+        }
 
-    /* ===== 主标题 ===== */
-    h1 {
-      text-align: center;
-      background: #102a43;
-      color: white;
-      padding: 16px 10px;
-      border-radius: 14px;
-      font-size: 22px;
-      letter-spacing: 1px;
-      margin-bottom: 0;
-    }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #2e3e4e;
+        }
 
-    /* ===== 卡片 ===== */
-    .card {
-      background: white;
-      margin-top: 14px;
-      padding: 16px;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-    }
+        .header p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            opacity: 0.85;
+            color: #4e5e6e;
+        }
 
-    h2 {
-      margin-top: 0;
-      font-size: 18px;
-      color: #102a43;
-      margin-bottom: 4px;
-    }
+        .content {
+            padding: 25px;
+        }
 
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-      font-size: 15px;
-    }
+        .input-group {
+            margin-bottom: 18px;
+        }
 
-    input,
-    select {
-      width: 100%;
-      margin-top: 6px;
-      padding: 13px 12px;
-      font-size: 18px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background: white;
-      outline: none;
-      transition: border 0.15s;
-    }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 14px;
+        }
 
-    input:focus,
-    select:focus {
-      border-color: #102a43;
-    }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-    button {
-      width: 100%;
-      margin-top: 14px;
-      padding: 14px;
-      font-size: 17px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      background: #102a43;
-      color: white;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      letter-spacing: 0.5px;
-    }
+        .input-wrapper {
+            position: relative;
+        }
 
-    button:active {
-      opacity: 0.8;
-    }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 15px 14px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid var(--border-soft);
+            border-radius: 18px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.2s;
+            color: var(--primary-color);
+            background-color: #fffbf9;
+        }
 
-    /* ===== 结果区域 ===== */
-    .result pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #f8fafc;
-      padding: 14px;
-      border-radius: 10px;
-      line-height: 1.7;
-      font-size: 15px;
-      margin-top: 6px;
-      font-family: Arial, "Microsoft YaHei", sans-serif;
-    }
+        .input-wrapper input:focus {
+            border-color: var(--macaron-blue);
+            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.5);
+        }
 
-    /* ===== 报价预览卡片 (手机自适应) ===== */
-    .quote-card-wrap {
-      width: 100%;
-      overflow: hidden;
-    }
+        .input-wrapper .prefix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
 
-    #quoteCard {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      background: #f8e6df;
-      color: #000;
-      font-family: "KaiTi", "STKaiti", "SimSun", "Microsoft YaHei", serif;
-      border: 1px solid #ff8f8f;
-      overflow: hidden;
-      border-radius: 4px;
-    }
+        .rate-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #fffbf9;
+            border-radius: 18px;
+            border: 2px solid var(--border-soft);
+            transition: border-color 0.3s, box-shadow 0.2s;
+        }
 
-    .quote-title {
-      background: #ff8f8f;
-      text-align: center;
-      font-size: clamp(24px, 7vw, 30px);
-      font-weight: bold;
-      line-height: 1.35;
-      padding: 4px 0;
-      letter-spacing: 2px;
-    }
+        .rate-wrapper:focus-within {
+            border-color: var(--macaron-blue);
+            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.5);
+        }
 
-    .quote-table {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-    }
+        .rate-prefix {
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            border-right: 1px solid var(--border-soft);
+            white-space: nowrap;
+        }
 
-    .quote-header {
-      background: #dfe5ff;
-      text-align: center;
-      font-size: clamp(21px, 6vw, 28px);
-      line-height: 1.4;
-      padding: 4px 0;
-      font-weight: normal;
-    }
+        .rate-wrapper input {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            background: transparent;
+            box-sizing: border-box;
+            outline: none;
+            color: var(--primary-color);
+        }
 
-    .quote-value {
-      background: #f7ddeb;
-      text-align: center;
-      font-size: clamp(21px, 6vw, 28px);
-      line-height: 1.4;
-      padding: 4px 0;
-    }
+        .quick-amounts {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
 
-    .quote-lines {
-      padding: 16px 10px 14px 10px;
-      background: #f8e6df;
-    }
+        .quick-amounts button {
+            flex: 1;
+            padding: 8px 0;
+            border: 1.5px solid var(--border-soft);
+            background: #fffbf9;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-main);
+            transition: all 0.2s;
+            font-weight: 500;
+        }
 
-    .quote-lines div {
-      font-size: clamp(17px, 4.6vw, 23px);
-      line-height: 1.55;
-      white-space: normal;
-      word-break: keep-all;
-      margin-bottom: 14px;
-    }
+        .quick-amounts button:hover {
+            background: var(--macaron-pink);
+            color: #5a3a3a;
+            border-color: var(--macaron-pink);
+        }
 
-    .quote-lines div:last-child {
-      margin-bottom: 0;
-    }
+        .capture-wrapper {
+            margin-top: 24px;
+            background-color: #ffffff;
+        }
 
-    /* ===== 导出图片专用样式 (固定600px) ===== */
-    .export-card {
-      width: 600px !important;
-      max-width: 600px !important;
-      min-width: 600px !important;
-      margin: 0 !important;
-    }
+        .result-box {
+            background-color: #ffffff;
+            border-radius: 22px;
+            padding: 0;
+            border: 2px solid var(--macaron-pink);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(255, 180, 170, 0.20);
+        }
 
-    .export-card .quote-title {
-      font-size: 30px !important;
-      line-height: 42px !important;
-      padding: 0 !important;
-    }
+        .result-box.active {
+            background-color: #ffffff;
+            border-color: var(--macaron-pink);
+        }
 
-    .export-card .quote-header {
-      font-size: 28px !important;
-      line-height: 42px !important;
-      padding: 0 !important;
-    }
+        .result-box.error {
+            background-color: #fff8f5;
+            border-color: var(--macaron-pink);
+        }
 
-    .export-card .quote-value {
-      font-size: 28px !important;
-      line-height: 42px !important;
-      padding: 0 !important;
-    }
+        .result-header-title {
+            background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
+            color: #5a3a3a;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            padding: 20px 20px 15px 20px;
+            margin: 0;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--macaron-pink);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
 
-    .export-card .quote-lines {
-      padding: 18px 10px 14px 10px !important;
-    }
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px 16px;
+            background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
+            border-bottom: 2px solid var(--macaron-pink);
+            font-size: 15px;
+            color: #3a4a4a;
+            text-align: center;
+        }
 
-    .export-card .quote-lines div {
-      font-size: 23px !important;
-      line-height: 36px !important;
-      white-space: normal !important;
-      word-break: keep-all !important;
-      margin-bottom: 16px !important;
-    }
+        .meta-info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 80px;
+            padding: 4px 0;
+            border-right: 1.5px solid rgba(255, 255, 255, 0.7);
+        }
 
-    /* ===== 手机端优化 ===== */
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
+        .meta-info-item:last-child {
+            border-right: none;
+        }
 
-      .app {
-        padding: 0;
-      }
+        .meta-info-item .label {
+            font-weight: 600;
+            color: #4a5a5a;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
 
-      h1 {
-        font-size: 20px;
-        padding: 14px 8px;
-      }
+        .meta-info-item .value {
+            font-weight: 800;
+            color: #3a5a7a;
+            font-size: 18px;
+            line-height: 1.2;
+        }
 
-      .card {
-        padding: 14px;
-        border-radius: 12px;
-      }
+        .result-content-padding {
+            padding: 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #fffbf9 100%);
+        }
 
-      input,
-      select {
-        font-size: 17px;
-        padding: 12px;
-      }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
 
-      button {
-        font-size: 16px;
-        padding: 13px;
-      }
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
 
-      .quote-lines {
-        padding: 14px 8px 12px 8px;
-      }
-    }
+        .result-label-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 40px;
+        }
 
-    /* 一些小工具类 */
-    .mt-0 { margin-top: 0; }
-    .mb-0 { margin-bottom: 0; }
-    .text-muted { color: #6b7a8a; font-size: 14px; }
-  </style>
+        .result-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #5a4a4a;
+            margin-bottom: 4px;
+        }
+
+        .result-formula-left {
+            font-size: 11px;
+            color: #a89890;
+            line-height: 1.4;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            display: block;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .result-value-col {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            max-width: 65%;
+        }
+
+        .result-cny {
+            font-size: 22px;
+            font-weight: 800;
+            color: #4a7aa8;
+            line-height: 1.2;
+        }
+
+        .result-krw {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .result-item.highlight {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2.5px dashed #c8f0e4;
+        }
+
+        .result-item.highlight .result-title {
+            font-size: 14px;
+            color: #2e8b6a;
+            font-weight: 800;
+        }
+
+        .result-item.highlight .result-cny {
+            font-size: 24px;
+            color: #2e8b6a;
+        }
+
+        .result-item.highlight .result-formula-left {
+            color: #4aa88a;
+        }
+
+        .error-text {
+            color: var(--accent-color);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px 0;
+            display: none;
+        }
+
+        .export-btn-wrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #c7e2ff, #e5d4ff);
+            color: #3a3a5a;
+            border: none;
+            border-radius: 20px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 16px rgba(180, 190, 240, 0.35);
+            letter-spacing: 0.5px;
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #b7d2ff, #d5c4ff);
+            box-shadow: 0 8px 20px rgba(160, 170, 230, 0.45);
+        }
+
+        .export-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .export-btn:disabled {
+            background: #e8e0e8;
+            color: #a0a0a0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .result-box.error .result-header-title {
+            background: linear-gradient(110deg, #ffd1dc 0%, #ffb8c8 100%);
+        }
+        .result-box.error .meta-info {
+            background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
+        }
+
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 18px;
+            width: 10px;
+            height: 10px;
+            background: var(--macaron-yellow);
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+
+        .calculator-card::after {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            width: 10px;
+            height: 10px;
+            background: var(--macaron-peach);
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+
+    </style>
 </head>
 <body>
-  <div class="app">
-    <h1>百货店返点计算器</h1>
 
-    <!-- 汇率设置（仅输入，无滚动） -->
-    <section class="card">
-      <h2>💱 每日汇率更新</h2>
-
-      <label>韩米汇率（1 人民币 = ? 韩元）</label>
-      <input id="exchangeRate" type="number" step="0.1" value="221.3">
-
-      <label>乐天/新罗券价</label>
-      <input id="lotteRate" type="number" step="0.1" value="229">
-
-      <label>新世界券价</label>
-      <input id="shinsegaeRate" type="number" step="0.1" value="228">
-
-      <label>现代券价</label>
-      <input id="hyundaiRate" type="number" step="0.1" value="228.8">
-    </section>
-
-    <!-- 报价计算 -->
-    <section class="card">
-      <h2>🧮 报价计算</h2>
-
-      <label>百货店</label>
-      <select id="store">
-        <option value="lotte">乐天/新罗</option>
-        <option value="shinsegae">新世界</option>
-        <option value="hyundai">现代</option>
-      </select>
-
-      <label>商品标价（韩元）</label>
-      <input id="price" type="number" placeholder="例如 24060000">
-
-      <label>返点比例（%）</label>
-      <input id="rebate" type="number" step="0.1" placeholder="例如 8.5">
-
-      <button onclick="calculate()">计算</button>
-    </section>
-
-    <!-- 计算结果 -->
-    <section class="card result">
-      <h2>📊 计算结果</h2>
-      <pre id="resultText">请输入数据后点击计算</pre>
-      <button onclick="copyResult()">复制报价</button>
-    </section>
-
-    <!-- 图片报价预览 -->
-    <section class="card">
-      <h2>🖼️ 图片报价预览</h2>
-
-      <div id="quoteCard">
-        <div class="quote-title">野猪购物返点</div>
-
-        <div class="quote-table">
-          <div class="quote-header">百货店标价</div>
-          <div class="quote-header">券+返点</div>
-          <div class="quote-header">汇率</div>
-
-          <div id="qc-price" class="quote-value">-</div>
-          <div id="qc-rebate" class="quote-value">-</div>
-          <div id="qc-rate" class="quote-value">-</div>
+<div class="calculator-card">
+    <div class="header">
+        <h1>NICE TAX FREE</h1>
+        <p>退税 & 到手价计算器</p>
+    </div>
+    
+    <div class="content">
+        <div class="input-group">
+            <label for="rateInput">当前汇率</label>
+            <div class="rate-wrapper">
+                <div class="rate-prefix">1 CNY =</div>
+                <input type="number" id="rateInput" step="0.01" placeholder="206.5" oninput="calculate()">
+            </div>
         </div>
 
-        <div class="quote-lines">
-          <div id="qc-line1">① 实际付款 -</div>
-          <div id="qc-line2">② 机场退税 -</div>
-          <div id="qc-line3">③ 最终到手价 -</div>
+        <div class="input-group">
+            <label for="amountInput">请输入购买金额</label>
+            <div class="input-wrapper">
+                <span class="prefix">₩</span>
+                <input type="number" id="amountInput" placeholder="0" min="0" oninput="calculate()">
+            </div>
         </div>
-      </div>
+		
+		<div class="quick-amounts">
+            <button onclick="setAmount(50000)">₩50,000</button>
+            <button onclick="setAmount(100000)">₩100,000</button>
+            <button onclick="setAmount(500000)">₩500,000</button>
+            <button onclick="setAmount(1000000)">₩1,000,000</button>
+        </div>
+		<br>
 
-      <button onclick="downloadQuoteImage()">一键生成图片</button>
-    </section>
-  </div>
+        <div class="input-group">
+            <label for="discountInput">请输入折扣 (填写百分比，如 10 代表 9 折)</label>
+            <div class="input-wrapper">
+                <input type="number" id="discountInput" placeholder="0" min="0" max="100" oninput="calculate()" style="padding-left: 15px; padding-right: 40px;">
+                <span class="prefix" style="left: auto; right: 15px;">%</span>
+            </div>
+        </div>
 
-  <!-- ===== 引入 html2canvas（用于生成图片） ===== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <div id="captureArea" class="capture-wrapper">
+            <div class="result-box" id="resultBox">
+                <h2 class="result-header-title">野猪购物返点</h2>
 
-  <!-- ===== 应用逻辑 ===== -->
-  <script>
-    (function() {
-      // 获取当前选中店铺的券价
-      function getStoreRate(storeValue) {
-        const lotteRate = parseFloat(document.getElementById('lotteRate').value) || 0;
-        const shinsegaeRate = parseFloat(document.getElementById('shinsegaeRate').value) || 0;
-        const hyundaiRate = parseFloat(document.getElementById('hyundaiRate').value) || 0;
+                <div class="meta-info" id="metaInfo">
+                    <div class="meta-info-item">
+                        <span class="label">百货店标价</span>
+                        <span class="value" id="metaOriginal">₩ 0</span>
+                    </div>
+                    <div class="meta-info-item">
+                        <span class="label">券+返点</span>
+                        <span class="value" id="metaDiscount">0%</span>
+                    </div>
+                    <div class="meta-info-item">
+                        <span class="label">汇率</span>
+                        <span class="value" id="metaRate">206.50</span>
+                    </div>
+                </div>
+                
+                <div class="result-content-padding">
+                    <div id="errorMsg" class="error-text">单笔购买原价需满 30,000 韩元才可退税</div>
+                    
+                    <div id="resultsContent">
+                        <div class="result-item">
+                            <div class="result-label-col">
+                                <span class="result-title">折后商品价格</span>
+                                <span class="result-formula-left" id="finalPriceFormula"></span>
+                            </div>
+                            <div class="result-value-col">
+                                <span class="result-cny" id="finalPriceCny">¥ 0.00</span>
+                                <span class="result-krw" id="finalPriceKrw">₩ 0</span>
+                            </div>
+                        </div>
 
-        switch (storeValue) {
-          case 'lotte': return lotteRate;
-          case 'shinsegae': return shinsegaeRate;
-          case 'hyundai': return hyundaiRate;
-          default: return 0;
+                        <div class="result-item">
+                            <div class="result-label-col">
+                                <span class="result-title">预计退税额</span>
+                                <span class="result-formula-left" id="refundFormula"></span>
+                            </div>
+                            <div class="result-value-col">
+                                <span class="result-cny" id="refundCny">¥ 0.00</span>
+                                <span class="result-krw" id="refundKrw">₩ 0</span>
+                            </div>
+                        </div>
+
+                        <div class="result-item highlight">
+                            <div class="result-label-col">
+                                <span class="result-title">最终实际到手价</span>
+                                <span class="result-formula-left" id="actualPriceFormula"></span>
+                            </div>
+                            <div class="result-value-col">
+                                <span class="result-cny" id="actualPriceCny">¥ 0.00</span>
+                                <span class="result-krw" id="actualPriceKrw">₩ 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-btn-wrapper">
+            <button class="export-btn" id="exportBtn" onclick="exportImage()">
+                一键出图
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultRate = 198;
+    const defaultDiscount = 12.5;
+
+    const rateInputEl = document.getElementById('rateInput');
+    const amountInputEl = document.getElementById('amountInput');
+    const discountInputEl = document.getElementById('discountInput');
+    
+    const resultBox = document.getElementById('resultBox');
+    const resultsContent = document.getElementById('resultsContent');
+    const errorMsg = document.getElementById('errorMsg');
+    
+    const finalPriceCny = document.getElementById('finalPriceCny');
+    const finalPriceKrw = document.getElementById('finalPriceKrw');
+    const finalPriceFormula = document.getElementById('finalPriceFormula');
+    
+    const refundCny = document.getElementById('refundCny');
+    const refundKrw = document.getElementById('refundKrw');
+    const refundFormula = document.getElementById('refundFormula');
+    
+    const actualPriceCny = document.getElementById('actualPriceCny');
+    const actualPriceKrw = document.getElementById('actualPriceKrw');
+    const actualPriceFormula = document.getElementById('actualPriceFormula');
+
+    const metaOriginal = document.getElementById('metaOriginal');
+    const metaDiscount = document.getElementById('metaDiscount');
+    const metaRate = document.getElementById('metaRate');
+
+    rateInputEl.value = defaultRate;
+    discountInputEl.value = defaultDiscount;
+
+    [rateInputEl, amountInputEl, discountInputEl].forEach(input => {
+        input.addEventListener('wheel', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    });
+
+    const taxBrackets = [
+        { min: 30000, max: 49999, refund: 2000 },
+        { min: 50000, max: 74999, refund: 3000 },
+        { min: 75000, max: 99999, refund: 5000 },
+        { min: 100000, max: 124999, refund: 6000 },
+        { min: 125000, max: 149999, refund: 8000 },
+        { min: 150000, max: 174999, refund: 9000 },
+        { min: 175000, max: 199999, refund: 10000 },
+        { min: 200000, max: 224999, refund: 12000 },
+        { min: 225000, max: 249999, refund: 13000 },
+        { min: 250000, max: 274999, refund: 15000 },
+        { min: 275000, max: 299999, refund: 17000 },
+        { min: 300000, max: 324999, refund: 19000 },
+        { min: 325000, max: 349999, refund: 21000 },
+        { min: 350000, max: 374999, refund: 23000 },
+        { min: 375000, max: 399999, refund: 25000 },
+        { min: 400000, max: 424999, refund: 27000 },
+        { min: 425000, max: 449999, refund: 28000 },
+        { min: 450000, max: 474999, refund: 30000 },
+        { min: 475000, max: 499999, refund: 32000 },
+        { min: 500000, max: 549999, refund: 35000 },
+        { min: 550000, max: 599999, refund: 37000 },
+        { min: 600000, max: 649999, refund: 41000 },
+        { min: 650000, max: 699999, refund: 45000 },
+        { min: 700000, max: 749999, refund: 50000 },
+        { min: 750000, max: 799999, refund: 53000 },
+        { min: 800000, max: 849999, refund: 57000 },
+        { min: 850000, max: 899999, refund: 60000 },
+        { min: 900000, max: 949999, refund: 65000 },
+        { min: 950000, max: 999999, refund: 68000 },
+        { min: 1000000, max: 1099999, refund: 74000 },
+        { min: 1100000, max: 1199999, refund: 80000 },
+        { min: 1200000, max: 1299999, refund: 90000 },
+        { min: 1300000, max: 1399999, refund: 95000 },
+        { min: 1400000, max: 1499999, refund: 104000 },
+        { min: 1500000, max: 1599999, refund: 110000 },
+        { min: 1600000, max: 1699999, refund: 115000 },
+        { min: 1700000, max: 1799999, refund: 127000 },
+        { min: 1800000, max: 1899999, refund: 135000 },
+        { min: 1900000, max: 1999999, refund: 140000 },
+        { min: 2000000, max: 2099999, refund: 150000 },
+        { min: 2100000, max: 2199999, refund: 155000 },
+        { min: 2200000, max: 2299999, refund: 160000 },
+        { min: 2300000, max: 2399999, refund: 170000 },
+        { min: 2400000, max: 2499999, refund: 177000 },
+        { min: 2500000, max: 2599999, refund: 185000 },
+        { min: 2600000, max: 2699999, refund: 190000 },
+        { min: 2700000, max: 2799999, refund: 200000 },
+        { min: 2800000, max: 2899999, refund: 210000 },
+        { min: 2900000, max: 2999999, refund: 215000 },
+        { min: 3000000, max: 3099999, refund: 225000 },
+        { min: 3100000, max: 3199999, refund: 230000 },
+        { min: 3200000, max: 3299999, refund: 235000 },
+        { min: 3300000, max: 3399999, refund: 240000 },
+        { min: 3400000, max: 3499999, refund: 250000 },
+        { min: 3500000, max: 3599999, refund: 260000 },
+        { min: 3600000, max: 3699999, refund: 270000 },
+        { min: 3700000, max: 3799999, refund: 280000 },
+        { min: 3800000, max: 3899999, refund: 285000 },
+        { min: 3900000, max: 3999999, refund: 290000 },
+        { min: 4000000, max: 4099999, refund: 300000 },
+        { min: 4100000, max: 4199999, refund: 310000 },
+        { min: 4200000, max: 4299999, refund: 315000 },
+        { min: 4300000, max: 4399999, refund: 320000 },
+        { min: 4400000, max: 4499999, refund: 333000 },
+        { min: 4500000, max: 4599999, refund: 340000 },
+        { min: 4600000, max: 4699999, refund: 350000 },
+        { min: 4700000, max: 4799999, refund: 360000 },
+        { min: 4800000, max: 4899999, refund: 370000 },
+        { min: 4900000, max: 4999999, refund: 380000 },
+        { min: 5000000, max: 5099999, refund: 390000 },
+        { min: 5100000, max: 5199999, refund: 400000 },
+        { min: 5200000, max: 5299999, refund: 410000 },
+        { min: 5300000, max: 5399999, refund: 420000 },
+        { min: 5400000, max: 5499999, refund: 430000 },
+        { min: 5500000, max: 5599999, refund: 440000 },
+        { min: 5600000, max: 5699999, refund: 450000 },
+        { min: 5700000, max: 5799999, refund: 460000 },
+        { min: 5800000, max: 5899999, refund: 470000 },
+        { min: 5900000, max: 5999999, refund: 480000 }
+    ];
+
+    const formatKRW = (num) => Math.round(num).toLocaleString('en-US');
+    const formatCNY = (num) => Number(num.toFixed(2)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function setAmount(value) {
+        amountInputEl.value = value;
+        calculate();
+    }
+
+    function updateMetaInfo(originalAmount, discountPercent, rate) {
+        if (isNaN(originalAmount) || originalAmount <= 0) {
+            metaOriginal.textContent = '₩ 0';
+        } else {
+            metaOriginal.textContent = `₩ ${formatKRW(originalAmount)}`;
         }
-      }
-
-      // 获取汇率
-      function getExchangeRate() {
-        return parseFloat(document.getElementById('exchangeRate').value) || 0;
-      }
-
-      // 数字格式化（千分位）
-      function formatNumber(num) {
-        if (num === undefined || num === null || isNaN(num)) return '-';
-        const rounded = Math.round(num * 100) / 100;
-        const parts = rounded.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        if (parts[1] === undefined || parts[1] === '00' || parts[1] === '0') {
-          return parts[0];
+        if (isNaN(discountPercent) || discountPercent < 0) {
+            metaDiscount.textContent = '0%';
+        } else {
+            const validDiscount = Math.min(100, Math.max(0, discountPercent));
+            metaDiscount.textContent = `${validDiscount}%`;
         }
-        return parts.join('.');
-      }
+        if (isNaN(rate) || rate <= 0) {
+            metaRate.textContent = defaultRate.toFixed(2);
+        } else {
+            metaRate.textContent = rate.toFixed(2);
+        }
+    }
 
-      // 人民币格式化
-      function formatCNY(num) {
-        if (num === undefined || num === null || isNaN(num)) return '-';
-        return '¥' + num.toFixed(2);
-      }
+    function calculate() {
+        const originalAmount = parseFloat(amountInputEl.value);
+        const discountPercent = parseFloat(discountInputEl.value) || 0;
+        let rate = parseFloat(rateInputEl.value);
+        if (isNaN(rate) || rate <= 0) rate = defaultRate;
 
-      // 店铺名称
-      function getStoreName(storeValue) {
-        const map = {
-          lotte: '乐天/新罗',
-          shinsegae: '新世界',
-          hyundai: '现代'
-        };
-        return map[storeValue] || storeValue;
-      }
+        updateMetaInfo(originalAmount, discountPercent, rate);
 
-      // ---------- 计算并更新所有结果 ----------
-      window.calculate = function() {
-        const price = parseFloat(document.getElementById('price').value);
-        const rebate = parseFloat(document.getElementById('rebate').value);
-        const store = document.getElementById('store').value;
+        resultBox.className = 'result-box';
+        resultsContent.style.display = 'block';
+        errorMsg.style.display = 'none';
 
-        if (isNaN(price) || price <= 0 || isNaN(rebate) || rebate <= 0) {
-          alert('请输入有效的商品标价和返点比例');
-          return;
+        if (isNaN(originalAmount) || originalAmount <= 0) {
+            finalPriceCny.textContent = "¥ 0.00";
+            finalPriceKrw.textContent = "₩ 0";
+            finalPriceFormula.textContent = "";
+            
+            refundCny.textContent = "¥ 0.00";
+            refundKrw.textContent = "₩ 0";
+            refundFormula.textContent = "";
+
+            actualPriceCny.textContent = "¥ 0.00";
+            actualPriceKrw.textContent = "₩ 0";
+            actualPriceFormula.textContent = "";
+            return;
         }
 
-        const exchangeRate = getExchangeRate();
-        if (isNaN(exchangeRate) || exchangeRate <= 0) {
-          alert('汇率无效，请检查汇率设置');
-          return;
+        const validDiscount = Math.max(0, Math.min(100, discountPercent));
+        const discountMultiplier = 1 - (validDiscount / 100);
+        const finalPrice = originalAmount * discountMultiplier;
+        
+        finalPriceCny.textContent = `¥ ${formatCNY(finalPrice / rate)}`;
+        finalPriceKrw.textContent = `₩ ${formatKRW(finalPrice)}`;
+        finalPriceFormula.textContent = `原价 ₩${formatKRW(originalAmount)} × (1 - ${validDiscount}%)`;
+
+        let refund = 0;
+        if (originalAmount < 30000) {
+            resultBox.classList.add('error');
+            resultsContent.style.display = 'none';
+            errorMsg.style.display = 'block';
+            errorMsg.innerHTML = `购买原价 ₩${formatKRW(originalAmount)} 未满 30,000 韩元，无法退税。`;
+            return;
         }
 
-        const storeRate = getStoreRate(store);
-        if (isNaN(storeRate) || storeRate <= 0) {
-          alert('券价无效，请检查汇率设置');
-          return;
+        resultBox.classList.add('active');
+
+        let refundFormulaText = "";
+        if (originalAmount >= 6000000) {
+            refund = Math.floor(originalAmount * 0.0818);
+            refundFormulaText = `原价 ≥ 600万，退税 = 原价 × 0.0818`;
+        } else {
+            for (let bracket of taxBrackets) {
+                if (originalAmount >= bracket.min && originalAmount <= bracket.max) {
+                    refund = bracket.refund;
+                    break;
+                }
+            }
+            refundFormulaText = `按原价落在的阶梯区间，固定退税`;
         }
 
-        // === 核心计算（全部转为人民币）===
-        // 实际付款(人民币) = 标价 / 券价 * 汇率
-        const actualPaymentCNY = (price / storeRate) * exchangeRate;
+        refundCny.textContent = `¥ ${formatCNY(refund / rate)}`;
+        refundKrw.textContent = `₩ ${formatKRW(refund)}`;
+        refundFormula.textContent = refundFormulaText;
 
-        // 机场退税(人民币) = 实际付款 * 返点比例%
-        const taxRefundCNY = actualPaymentCNY * (rebate / 100);
+        const actualPrice = finalPrice - refund;
 
-        // 最终到手价(人民币) = 实际付款 - 机场退税
-        const finalPriceCNY = actualPaymentCNY - taxRefundCNY;
+        actualPriceCny.textContent = `¥ ${formatCNY(actualPrice / rate)}`;
+        actualPriceKrw.textContent = `₩ ${formatKRW(actualPrice)}`;
+        actualPriceFormula.textContent = `折后价 − 退税 = 实际到手价`;
+    }
 
-        // 生成结果文本
-        const resultText = `百货店：${getStoreName(store)}\n商品标价：₩${formatNumber(price)}\n返点比例：${rebate}%\n券价：${storeRate}\n汇率：1 CNY = ${exchangeRate} KRW\n\n① 实际付款：${formatCNY(actualPaymentCNY)}\n② 机场退税：${formatCNY(taxRefundCNY)}\n③ 最终到手价：${formatCNY(finalPriceCNY)}`;
-
-        document.getElementById('resultText').textContent = resultText;
-
-        // 更新预览卡片顶部三个值
-        document.getElementById('qc-price').textContent = formatNumber(price);
-        document.getElementById('qc-rebate').textContent = `${rebate}%`;
-        document.getElementById('qc-rate').textContent = exchangeRate;
-
-        // 预览卡片三行（全部显示人民币）
-        document.getElementById('qc-line1').textContent = `① 实际付款 ${formatCNY(actualPaymentCNY)}`;
-        document.getElementById('qc-line2').textContent = `② 机场退税 ${formatCNY(taxRefundCNY)}`;
-        document.getElementById('qc-line3').textContent = `③ 最终到手价 ${formatCNY(finalPriceCNY)}`;
-
-        // 缓存当前计算结果
-        window._currentQuote = {
-          storeName: getStoreName(store),
-          price,
-          rebate,
-          storeRate,
-          exchangeRate,
-          actualPaymentCNY,
-          taxRefundCNY,
-          finalPriceCNY,
-          resultText,
-          timestamp: new Date().toISOString()
-        };
-      };
-
-      // ---------- 复制结果 ----------
-      window.copyResult = function() {
-        const resultText = document.getElementById('resultText').textContent;
-        if (!resultText || resultText.includes('请输入数据')) {
-          alert('请先进行计算');
-          return;
-        }
-        navigator.clipboard.writeText(resultText).then(() => {
-          alert('报价已复制到剪贴板 ✅');
-        }).catch(() => {
-          const textarea = document.createElement('textarea');
-          textarea.value = resultText;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-          alert('报价已复制到剪贴板 ✅');
-        });
-      };
-
-      // ---------- 生成报价图片 ----------
-      window.downloadQuoteImage = async function() {
-        const quoteCard = document.getElementById('quoteCard');
-        if (!quoteCard) return;
-
-        const priceText = document.getElementById('qc-price').textContent;
-        if (priceText === '-') {
-          alert('请先进行计算，再生成图片');
-          return;
+    function exportImage() {
+        const btn = document.getElementById('exportBtn');
+        const captureArea = document.getElementById('captureArea');
+        
+        const originalAmount = parseFloat(amountInputEl.value);
+        if (isNaN(originalAmount) || originalAmount <= 0) {
+            alert("请先输入购买金额！");
+            return;
         }
 
-        const clone = quoteCard.cloneNode(true);
-        clone.classList.add('export-card');
-        clone.style.position = 'fixed';
-        clone.style.left = '-9999px';
-        clone.style.top = '0';
-        clone.style.width = '600px';
-        clone.style.maxWidth = '600px';
-        clone.style.minWidth = '600px';
-        clone.style.margin = '0';
-        document.body.appendChild(clone);
+        btn.disabled = true;
+        btn.innerHTML = "正在生成图片...";
 
-        try {
-          const canvas = await html2canvas(clone, {
+        html2canvas(captureArea, {
+            backgroundColor: "#ffffff",
             scale: 2,
-            backgroundColor: '#f8e6df',
-            allowTaint: false,
             useCORS: true,
-            logging: false,
-            width: 600,
-            height: clone.offsetHeight,
-            windowWidth: 600,
-          });
+            borderRadius: 22
+        }).then(canvas => {
+            btn.disabled = false;
+            btn.innerHTML = "一键出图";
 
-          const link = document.createElement('a');
-          link.download = `野猪报价_${new Date().toISOString().slice(0, 10)}.png`;
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-        } catch (err) {
-          console.error('生成图片失败:', err);
-          alert('生成图片失败，请重试');
-        } finally {
-          document.body.removeChild(clone);
-        }
-      };
+            const imgData = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `野猪购物返点_退税计算_${new Date().getTime()}.png`;
+            link.href = imgData;
+            link.click();
+        }).catch(err => {
+            console.error("生成图片失败:", err);
+            alert("生成图片失败，请检查网络后重试。");
+            btn.disabled = false;
+            btn.innerHTML = "一键出图";
+        });
+    }
 
-      // 暴露到全局
-      window.formatNumber = formatNumber;
-      window.formatCNY = formatCNY;
-      window.getStoreName = getStoreName;
+    window.addEventListener('DOMContentLoaded', () => {
+        calculate();
+    });
+</script>
 
-    })();
-  </script>
 </body>
 </html>
