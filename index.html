@@ -212,10 +212,11 @@
             border-color: var(--macaron-pink);
         }
 
+        /* 結果框內文字：全部減小5px */
         .result-header-title {
             background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
             color: #5a3a3a;
-            font-size: 18px;
+            font-size: 13px; /* 18-5 */
             font-weight: 800;
             text-align: center;
             padding: 20px 20px 15px 20px;
@@ -231,7 +232,7 @@
             padding: 10px 16px;
             background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
             border-bottom: 2px solid var(--macaron-pink);
-            font-size: 13px;
+            font-size: 8px; /* 13-5 */
             color: #3a4a4a;
             text-align: center;
         }
@@ -253,14 +254,14 @@
         .meta-info-item .label {
             font-weight: 600;
             color: #4a5a5a;
-            font-size: 12px;
+            font-size: 7px; /* 12-5 */
             margin-bottom: 4px;
         }
 
         .meta-info-item .value {
             font-weight: 800;
             color: #3a5a7a;
-            font-size: 16px;
+            font-size: 11px; /* 16-5 */
             line-height: 1.2;
         }
 
@@ -289,14 +290,14 @@
         }
 
         .result-title {
-            font-size: 12px;
+            font-size: 7px; /* 12-5 */
             font-weight: 700;
             color: #5a4a4a;
             margin-bottom: 4px;
         }
 
         .result-formula-left {
-            font-size: 9px;
+            font-size: 4px; /* 9-5，注意可能过小 */
             color: #a89890;
             line-height: 1.4;
             background: transparent;
@@ -316,14 +317,14 @@
         }
 
         .result-cny {
-            font-size: 20px;
+            font-size: 15px; /* 20-5 */
             font-weight: 800;
             color: #4a7aa8;
             line-height: 1.2;
         }
 
         .result-krw {
-            font-size: 10px;
+            font-size: 5px; /* 10-5，注意可能过小 */
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -335,13 +336,13 @@
         }
 
         .result-item.highlight .result-title {
-            font-size: 12px;
+            font-size: 7px; /* 12-5 */
             color: #2e8b6a;
             font-weight: 800;
         }
 
         .result-item.highlight .result-cny {
-            font-size: 22px;
+            font-size: 17px; /* 22-5 */
             color: #2e8b6a;
         }
 
@@ -351,7 +352,7 @@
 
         .error-text {
             color: var(--accent-color);
-            font-size: 13px;
+            font-size: 8px; /* 13-5 */
             font-weight: 600;
             text-align: center;
             padding: 20px 0;
