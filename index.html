@@ -35,17 +35,42 @@
             position: relative;
         }
 
-        /* 头部 – 轻量渐变，无背景块，仅作为标题区域 */
+        /* 头部 – 添加渐变背景 */
         .header {
-            background: transparent;        /* 移除原来的背景渐变块 */
-            padding: 10px 0 16px;           /* 调整间距 */
+            background: linear-gradient(110deg, #dbeeff 0%, #e6dfff 100%);
+            border-radius: 24px;
+            padding: 20px 16px 18px;
             text-align: center;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(200, 210, 255, 0.2);
+            margin-bottom: 24px; /* 增加与下方内容的间距 */
+        }
+
+        /* 左右两侧的装饰圆点 */
+        .header::before,
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .header::before {
+            left: 18px;
+            background-color: #fff7bb;
+        }
+
+        .header::after {
+            right: 18px;
+            background-color: #ffe5cf;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
             letter-spacing: 1.2px;
             color: #1e2e3e;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
@@ -54,9 +79,10 @@
         .header p {
             margin: 6px 0 0;
             font-size: 14px;
-            opacity: 0.9;
-            color: #2e3e4e;
+            opacity: 0.8;
+            color: #3a4a5a;
             font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
         /* 内容区域 – 无背景块，直接展示输入 */
@@ -215,7 +241,7 @@
         .result-header-title {
             background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
             color: #5a3a3a;
-            font-size: 20px; /* 野猪购物返点 */
+            font-size: 20px;
             font-weight: 800;
             text-align: center;
             padding: 18px 12px 4px;
@@ -240,22 +266,19 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			min-width: 0;                          /* 允许收缩，防止撑破 */
+			min-width: 0;
 			padding: 4px 0;
 			border-right: 1px solid rgba(255, 255, 255, 0.8);
 		}
 
-		/* 第一列：百货店标价 —— 占 40% */
 		.meta-info-item:nth-child(1) {
 			flex: 0 0 34%;
 		}
 
-		/* 第二列：券+返点 —— 占 30% */
 		.meta-info-item:nth-child(2) {
 			flex: 0 0 33%;
 		}
 
-		/* 第三列：汇率 —— 占剩余 30% */
 		.meta-info-item:nth-child(3) {
 			flex: 1;
 		}
