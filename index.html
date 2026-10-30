@@ -2,74 +2,66 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ye-Zhu TaxFree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>NICE TAX FREE · 退税计算器</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root {
-            --primary-color: #5b8bb5;
-            --accent-color: #f28b82;
-            --bg-color: #fdf6f2;
-            --card-bg: #ffffff;
-            --text-main: #4a4a4a;
-            --text-muted: #8a8a8a;
-            --success-color: #5fbf9f;
-            --macaron-pink: #ffd1dc;
-            --macaron-blue: #c7e2ff;
-            --macaron-yellow: #fff0b8;
-            --macaron-mint: #c8f0e4;
-            --macaron-lavender: #e5d4ff;
-            --macaron-peach: #ffdbc9;
-            --border-soft: #f0e0da;
-        }
-
-        body {
-            font-family: 'Segoe UI', 'Quicksand', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Segoe UI', 'Quicksand', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Tahoma, Geneva, Verdana, sans-serif;
+            background: transparent;        /* 完全无背景 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 16px 12px 30px;
+            margin: 0;
+        }
+
+        /* 移除大圆框卡片，直接使用流式布局 */
         .calculator-card {
-            background-color: var(--card-bg);
-            border-radius: 28px;
-            box-shadow: 0 16px 36px rgba(240, 180, 170, 0.18);
+            background: transparent;        /* 透明，去除白色卡片背景 */
+            box-shadow: none;               /* 去除阴影 */
+            border-radius: 0;               /* 去除圆角 */
             width: 100%;
-            max-width: 450px;
-            overflow: hidden;
-            border-top: 8px solid var(--macaron-blue);
+            max-width: 420px;
+            overflow: visible;
+            border: none;
             position: relative;
         }
 
+        /* 头部 – 轻量渐变，无背景块，仅作为标题区域 */
         .header {
-            background: linear-gradient(135deg, #c7e2ff 0%, #e5d4ff 100%);
-            color: #3a4a5a;
-            padding: 22px 20px;
+            background: transparent;        /* 移除原来的背景渐变块 */
+            padding: 10px 0 16px;           /* 调整间距 */
             text-align: center;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #2e3e4e;
+            letter-spacing: 1.2px;
+            color: #1e2e3e;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
         .header p {
             margin: 6px 0 0;
-            font-size: 15px;
-            opacity: 0.85;
-            color: #4e5e6e;
+            font-size: 14px;
+            opacity: 0.9;
+            color: #2e3e4e;
+            font-weight: 500;
         }
 
+        /* 内容区域 – 无背景块，直接展示输入 */
         .content {
-            padding: 25px;
+            padding: 0;
         }
 
         .input-group {
@@ -80,12 +72,14 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--text-main);
-            font-size: 15px;
+            color: #3a4a5a;
+            font-size: 14px;
+            letter-spacing: 0.3px;
         }
 
         input[type="number"] {
             -moz-appearance: textfield;
+            appearance: textfield;
         }
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
@@ -99,141 +93,146 @@
 
         .input-wrapper input {
             width: 100%;
-            padding: 14px 15px 14px 40px;
+            padding: 14px 16px 14px 42px;
             font-size: 16px;
             font-weight: 600;
-            border: 2px solid var(--border-soft);
-            border-radius: 18px;
+            border: 1.8px solid #ede3dd;
+            border-radius: 20px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.3s, box-shadow 0.2s;
-            color: var(--primary-color);
-            background-color: #fffbf9;
+            transition: all 0.15s;
+            color: #2d4a6a;
+            background: #fefcfb;
+            letter-spacing: 0.3px;
         }
 
         .input-wrapper input:focus {
-            border-color: var(--macaron-blue);
-            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.5);
+            border-color: #b8d0e8;
+            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.4);
+            background: #ffffff;
         }
 
         .input-wrapper .prefix {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            font-weight: bold;
-            color: var(--text-muted);
+            font-weight: 600;
+            color: #8f9eb0;
         }
 
         .rate-wrapper {
             display: flex;
             align-items: center;
-            background-color: #fffbf9;
-            border-radius: 18px;
-            border: 2px solid var(--border-soft);
-            transition: border-color 0.3s, box-shadow 0.2s;
+            background: #fefcfb;
+            border-radius: 20px;
+            border: 1.8px solid #ede3dd;
+            transition: all 0.15s;
         }
 
         .rate-wrapper:focus-within {
-            border-color: var(--macaron-blue);
-            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.5);
+            border-color: #b8d0e8;
+            box-shadow: 0 0 0 4px rgba(199, 226, 255, 0.4);
+            background: #ffffff;
         }
 
         .rate-prefix {
-            padding: 12px 15px;
+            padding: 12px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-main);
-            border-right: 1px solid var(--border-soft);
+            color: #3a4a5a;
+            border-right: 1px solid #ede3dd;
             white-space: nowrap;
+            letter-spacing: 0.2px;
         }
 
         .rate-wrapper input {
             flex: 1;
-            padding: 12px 15px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 12px 14px;
+            font-size: 15px;
+            font-weight: 700;
             border: none;
             background: transparent;
-            box-sizing: border-box;
             outline: none;
-            color: var(--primary-color);
+            color: #2d4a6a;
         }
 
         .quick-amounts {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            gap: 8px;
+            margin-top: 12px;
+            margin-bottom: 6px;
         }
 
         .quick-amounts button {
             flex: 1;
-            padding: 8px 0;
-            border: 1.5px solid var(--border-soft);
-            background: #fffbf9;
-            border-radius: 14px;
+            padding: 10px 0;
+            border: 1.5px solid #ede3dd;
+            background: #fefcfb;
+            border-radius: 18px;
             cursor: pointer;
-            font-size: 10px;
-            color: var(--text-main);
-            transition: all 0.2s;
-            font-weight: 500;
+            font-size: 11px;
+            color: #3a4a5a;
+            transition: all 0.15s;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .quick-amounts button:hover {
-            background: var(--macaron-pink);
-            color: #5a3a3a;
-            border-color: var(--macaron-pink);
+        .quick-amounts button:hover,
+        .quick-amounts button:active {
+            background: #ffe6e6;
+            color: #7a4a4a;
+            border-color: #ffc8c8;
         }
 
+        /* 结果区域 – 保留内部卡片样式，但外容器无背景无框 */
         .capture-wrapper {
-            margin-top: 24px;
-            background-color: #ffffff;
+            margin-top: 28px;
+            background: transparent;
         }
 
         .result-box {
             background-color: #ffffff;
-            border-radius: 22px;
+            border-radius: 28px;
             padding: 0;
-            border: 2px solid var(--macaron-pink);
-            transition: all 0.3s ease;
+            border: 2px solid #ffe2e2;
+            transition: all 0.15s;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(255, 180, 170, 0.20);
+            box-shadow: 0 6px 18px rgba(255, 200, 190, 0.12);
         }
 
         .result-box.active {
-            background-color: #ffffff;
-            border-color: var(--macaron-pink);
+            border-color: #ffd1dc;
         }
 
         .result-box.error {
-            background-color: #fff8f5;
-            border-color: var(--macaron-pink);
+            border-color: #ffd1dc;
+            background: #fffcfb;
         }
 
-        /* 結果框內文字：全部減小5px */
         .result-header-title {
             background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
             color: #5a3a3a;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             text-align: center;
-            padding: 20px 20px 15px 20px;
+            padding: 18px 12px 14px;
             margin: 0;
-            letter-spacing: 2px;
-            border-bottom: 2px solid var(--macaron-pink);
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            letter-spacing: 1.5px;
+            border-bottom: 1.5px solid #ffe2e2;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
         }
 
         .meta-info {
             display: flex;
             flex-wrap: wrap;
-            padding: 10px 16px;
-            background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
-            border-bottom: 2px solid var(--macaron-pink);
-            font-size: 16px;
-            color: #3a4a4a;
+            padding: 10px 8px;
+            background: linear-gradient(90deg, #e2f2ec 0%, #dae8ff 100%);
+            border-bottom: 1.5px solid #ffe2e2;
+            font-size: 15px;
+            color: #2e4a4a;
             text-align: center;
         }
 
@@ -242,9 +241,9 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
-            min-width: 80px;
+            min-width: 70px;
             padding: 4px 0;
-            border-right: 1.5px solid rgba(255, 255, 255, 0.7);
+            border-right: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         .meta-info-item:last-child {
@@ -253,28 +252,30 @@
 
         .meta-info-item .label {
             font-weight: 600;
-            color: #4a5a5a;
-            font-size: 12px; /* 12-5 */
+            color: #3e5a5a;
+            font-size: 11px;
             margin-bottom: 4px;
+            letter-spacing: 0.2px;
         }
 
         .meta-info-item .value {
             font-weight: 800;
-            color: #3a5a7a;
-            font-size: 15px; /* 16-5 */
+            color: #1e3e5e;
+            font-size: 14px;
             line-height: 1.2;
+            word-break: break-word;
         }
 
         .result-content-padding {
-            padding: 20px;
-            background: linear-gradient(180deg, #ffffff 0%, #fffbf9 100%);
+            padding: 20px 18px 18px;
+            background: #ffffff;
         }
 
         .result-item {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .result-item:last-child {
@@ -287,25 +288,23 @@
             flex-direction: column;
             justify-content: flex-start;
             min-height: 40px;
+            padding-right: 6px;
         }
 
         .result-title {
-            font-size: 15px; /* 12-5 */
+            font-size: 14px;
             font-weight: 700;
-            color: #5a4a4a;
-            margin-bottom: 4px;
+            color: #4a3a3a;
+            margin-bottom: 3px;
+            letter-spacing: 0.2px;
         }
 
         .result-formula-left {
-            font-size: 10px; /* 12-5 */
-            color: #a89890;
+            font-size: 10px;
+            color: #b0a09a;
             line-height: 1.4;
-            background: transparent;
-            padding: 0;
-            margin: 0;
-            display: block;
-            text-align: left;
             word-break: break-word;
+            text-align: left;
         }
 
         .result-value-col {
@@ -313,153 +312,152 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            max-width: 65%;
+            max-width: 60%;
+            flex-shrink: 0;
         }
 
         .result-cny {
-            font-size: 15px; /* 20-5 */
+            font-size: 16px;
             font-weight: 800;
-            color: #4a7aa8;
+            color: #2e6a9e;
             line-height: 1.2;
+            letter-spacing: 0.2px;
         }
 
         .result-krw {
-            font-size: 10px; /* 10-5  */
-            color: var(--text-muted);
+            font-size: 10px;
+            color: #9a9a9a;
             margin-top: 2px;
+            font-weight: 500;
         }
 
         .result-item.highlight {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2.5px dashed #c8f0e4;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 2px dashed #c8e8dc;
         }
 
         .result-item.highlight .result-title {
-            font-size: 7px; /* 12-5 */
+            font-size: 8px;
+            color: #2e8b6a;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+        }
+
+        .result-item.highlight .result-cny {
+            font-size: 18px;
             color: #2e8b6a;
             font-weight: 800;
         }
 
-        .result-item.highlight .result-cny {
-            font-size: 17px; /* 22-5 */
-            color: #2e8b6a;
-        }
-
         .result-item.highlight .result-formula-left {
-            color: #4aa88a;
+            color: #3ea88a;
+            font-size: 9px;
         }
 
         .error-text {
-            color: var(--accent-color);
-            font-size: 8px; /* 13-5 */
+            color: #e06b6b;
+            font-size: 9px;
             font-weight: 600;
             text-align: center;
-            padding: 20px 0;
+            padding: 12px 0 6px;
             display: none;
+            letter-spacing: 0.2px;
+            background: #fff6f5;
+            border-radius: 14px;
+            margin: 6px 0;
         }
 
         .export-btn-wrapper {
-            margin-top: 20px;
+            margin-top: 22px;
             text-align: center;
         }
 
         .export-btn {
-            background: linear-gradient(135deg, #c7e2ff, #e5d4ff);
-            color: #3a3a5a;
+            background: linear-gradient(135deg, #d4e6ff, #efe2ff);
+            color: #1e2e4e;
             border: none;
-            border-radius: 20px;
-            padding: 15px 30px;
-            font-size: 14px;
+            border-radius: 28px;
+            padding: 16px 24px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: all 0.3s, transform 0.1s;
+            transition: all 0.15s;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 6px 16px rgba(180, 190, 240, 0.35);
-            letter-spacing: 0.5px;
+            box-shadow: 0 6px 16px rgba(180, 190, 240, 0.25);
+            letter-spacing: 0.8px;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .export-btn:hover {
-            background: linear-gradient(135deg, #b7d2ff, #d5c4ff);
-            box-shadow: 0 8px 20px rgba(160, 170, 230, 0.45);
-        }
-
+        .export-btn:hover,
         .export-btn:active {
-            transform: scale(0.98);
+            background: linear-gradient(135deg, #bdd6ff, #e0cfff);
+            box-shadow: 0 8px 20px rgba(160, 170, 230, 0.35);
+            transform: scale(0.99);
         }
-        
+
         .export-btn:disabled {
-            background: #e8e0e8;
+            background: #eee6ee;
             color: #a0a0a0;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
         }
 
-        .result-box.error .result-header-title {
-            background: linear-gradient(110deg, #ffd1dc 0%, #ffb8c8 100%);
-        }
-        .result-box.error .meta-info {
-            background: linear-gradient(90deg, #c8f0e4 0%, #c7e2ff 100%);
-        }
-
-        .calculator-card::before {
-            content: '';
-            position: absolute;
-            top: 14px;
-            left: 18px;
-            width: 10px;
-            height: 10px;
-            background: var(--macaron-yellow);
-            border-radius: 50%;
-            opacity: 0.9;
-        }
-
-        .calculator-card::after {
-            content: '';
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            width: 10px;
-            height: 10px;
-            background: var(--macaron-peach);
-            border-radius: 50%;
-            opacity: 0.9;
-        }
-
-        /* 图片预览区域 */
         .image-preview-area {
-            margin-top: 18px;
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            background: #fff7f5;
-            border-radius: 20px;
-            padding: 12px;
-            border: 1px dashed var(--macaron-blue);
-            transition: opacity 0.3s;
+            background: #fef9f8;
+            border-radius: 24px;
+            padding: 14px 12px;
+            border: 1px dashed #c7e2ff;
+            transition: opacity 0.2s;
         }
 
         .image-preview-area img {
             max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 6px 14px rgba(180, 190, 240, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(160, 180, 220, 0.2);
             border: 2px solid white;
         }
 
         .image-preview-area .preview-label {
             font-size: 10px;
-            color: #8a7a7a;
+            color: #7a8a9a;
             letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            .result-cny {
+                font-size: 14px;
+            }
+            .result-item.highlight .result-cny {
+                font-size: 16px;
+            }
+            .quick-amounts button {
+                font-size: 9px;
+                padding: 8px 0;
+            }
+            .meta-info-item .value {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- 移除了 .calculator-card 的圆框样式，但保留结构 -->
 <div class="calculator-card">
     <div class="header">
         <h1>NICE TAX FREE</h1>
@@ -467,6 +465,7 @@
     </div>
     
     <div class="content">
+        <!-- 汇率 -->
         <div class="input-group">
             <label for="rateInput">当前汇率</label>
             <div class="rate-wrapper">
@@ -475,6 +474,7 @@
             </div>
         </div>
 
+        <!-- 购买金额 -->
         <div class="input-group">
             <label for="amountInput">请输入购买金额</label>
             <div class="input-wrapper">
@@ -483,6 +483,7 @@
             </div>
         </div>
 		
+        <!-- 快捷金额 -->
 		<div class="quick-amounts">
             <button onclick="setAmount(50000)">₩50,000</button>
             <button onclick="setAmount(100000)">₩100,000</button>
@@ -491,14 +492,16 @@
         </div>
 		<br>
 
+        <!-- 折扣 -->
         <div class="input-group">
-            <label for="discountInput">请输入折扣 (填写百分比，如 10 代表 9 折)</label>
+            <label for="discountInput">折扣百分比 (如 10 代表 9 折)</label>
             <div class="input-wrapper">
-                <input type="number" id="discountInput" placeholder="0" min="0" max="100" oninput="calculate()" style="padding-left: 15px; padding-right: 40px;">
-                <span class="prefix" style="left: auto; right: 15px;">%</span>
+                <input type="number" id="discountInput" placeholder="0" min="0" max="100" oninput="calculate()" style="padding-left: 16px; padding-right: 42px;">
+                <span class="prefix" style="left: auto; right: 16px;">%</span>
             </div>
         </div>
 
+        <!-- 截图区域 -->
         <div id="captureArea" class="capture-wrapper">
             <div class="result-box" id="resultBox">
                 <h2 class="result-header-title">野猪购物返点</h2>
@@ -559,15 +562,16 @@
             </div>
         </div>
 
+        <!-- 一键出图 -->
         <div class="export-btn-wrapper">
             <button class="export-btn" id="exportBtn" onclick="exportImage()">
-                一键出图
+                📸 一键出图
             </button>
         </div>
 
-        <!-- 图片预览区域 -->
+        <!-- 预览图 -->
         <div class="image-preview-area" id="imagePreviewArea" style="display: none;">
-            <span class="preview-label">📸 预览</span>
+            <span class="preview-label">📱 预览 · 长按保存</span>
             <img id="previewImage" src="" alt="退税计算结果图">
         </div>
     </div>
@@ -734,7 +738,6 @@
         resultsContent.style.display = 'block';
         errorMsg.style.display = 'none';
 
-        // 清空预览（因为结果变化）
         if (imagePreviewArea.style.display !== 'none') {
             imagePreviewArea.style.display = 'none';
             previewImage.src = '';
@@ -810,20 +813,19 @@
         }
 
         btn.disabled = true;
-        btn.innerHTML = "正在生成图片...";
+        btn.innerHTML = "生成中...";
 
         html2canvas(captureArea, {
             backgroundColor: "#ffffff",
             scale: 2,
             useCORS: true,
-            borderRadius: 22
+            borderRadius: 28
         }).then(canvas => {
             btn.disabled = false;
-            btn.innerHTML = "一键出图";
+            btn.innerHTML = "📸 一键出图";
 
             const imgData = canvas.toDataURL('image/png');
             
-            // 显示预览区域（不再自动下载）
             previewImage.src = imgData;
             imagePreviewArea.style.display = 'flex';
 
@@ -831,7 +833,7 @@
             console.error("生成图片失败:", err);
             alert("生成图片失败，请检查网络后重试。");
             btn.disabled = false;
-            btn.innerHTML = "一键出图";
+            btn.innerHTML = "📸 一键出图";
         });
     }
 
