@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>NICE TAX FREE</title>
+    <title>NICE TAX-FREE</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
@@ -215,10 +215,10 @@
         .result-header-title {
             background: linear-gradient(110deg, #ffd1dc 0%, #fff0b8 100%);
             color: #5a3a3a;
-            font-size: 17px;
+            font-size: 20px; /* 野猪购物返点 */
             font-weight: 800;
             text-align: center;
-            padding: 18px 12px 14px;
+            padding: 18px 12px 4px;
             margin: 0;
             letter-spacing: 1.5px;
             border-bottom: 1.5px solid #ffe2e2;
@@ -236,15 +236,29 @@
             text-align: center;
         }
 
-        .meta-info-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            min-width: 70px;
-            padding: 4px 0;
-            border-right: 1px solid rgba(255, 255, 255, 0.8);
-        }
+		.meta-info-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			min-width: 0;                          /* 允许收缩，防止撑破 */
+			padding: 4px 0;
+			border-right: 1px solid rgba(255, 255, 255, 0.8);
+		}
+
+		/* 第一列：百货店标价 —— 占 40% */
+		.meta-info-item:nth-child(1) {
+			flex: 0 0 34%;
+		}
+
+		/* 第二列：券+返点 —— 占 30% */
+		.meta-info-item:nth-child(2) {
+			flex: 0 0 33%;
+		}
+
+		/* 第三列：汇率 —— 占剩余 30% */
+		.meta-info-item:nth-child(3) {
+			flex: 1;
+		}
 
         .meta-info-item:last-child {
             border-right: none;
@@ -253,7 +267,7 @@
         .meta-info-item .label {
             font-weight: 600;
             color: #3e5a5a;
-            font-size: 11px;
+            font-size: 12px;
             margin-bottom: 4px;
             letter-spacing: 0.2px;
         }
@@ -261,7 +275,7 @@
         .meta-info-item .value {
             font-weight: 800;
             color: #1e3e5e;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.2;
             word-break: break-word;
         }
@@ -275,7 +289,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 18px;
+            margin-bottom: 8px;
         }
 
         .result-item:last-child {
@@ -338,10 +352,10 @@
         }
 
         .result-item.highlight .result-title {
-            font-size: 8px;
+            font-size: 16px;
             color: #2e8b6a;
             font-weight: 800;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.1px;
         }
 
         .result-item.highlight .result-cny {
@@ -352,7 +366,7 @@
 
         .result-item.highlight .result-formula-left {
             color: #3ea88a;
-            font-size: 9px;
+            font-size: 10px;
         }
 
         .error-text {
@@ -485,10 +499,10 @@
 		
         <!-- 快捷金额 -->
 		<div class="quick-amounts">
-            <button onclick="setAmount(50000)">₩50,000</button>
-            <button onclick="setAmount(100000)">₩100,000</button>
-            <button onclick="setAmount(500000)">₩500,000</button>
             <button onclick="setAmount(1000000)">₩1,000,000</button>
+            <button onclick="setAmount(5000000)">₩5,000,000</button>
+            <button onclick="setAmount(10000000)">₩10,000,000</button>
+            <button onclick="setAmount(50000000)">₩50,000,000</button>
         </div>
 		<br>
 
