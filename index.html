@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>NICE TAX-FREE</title>
+    <title>Nice Tax-Free</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
@@ -352,14 +352,14 @@
         }
 
         .result-item.highlight .result-title {
-            font-size: 16px;
+            font-size: 15px;
             color: #2e8b6a;
             font-weight: 800;
             letter-spacing: 0.1px;
         }
 
         .result-item.highlight .result-cny {
-            font-size: 18px;
+            font-size: 16px;
             color: #2e8b6a;
             font-weight: 800;
         }
@@ -392,7 +392,7 @@
             color: #1e2e4e;
             border: none;
             border-radius: 28px;
-            padding: 16px 24px;
+            padding: 10px 24px;
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
@@ -579,13 +579,13 @@
         <!-- 一键出图 -->
         <div class="export-btn-wrapper">
             <button class="export-btn" id="exportBtn" onclick="exportImage()">
-                📸 一键出图
+                一键出图
             </button>
         </div>
 
         <!-- 预览图 -->
         <div class="image-preview-area" id="imagePreviewArea" style="display: none;">
-            <span class="preview-label">📱 预览 · 长按保存</span>
+            <span class="preview-label">预览 · 长按保存</span>
             <img id="previewImage" src="" alt="退税计算结果图">
         </div>
     </div>
@@ -836,7 +836,7 @@
             borderRadius: 28
         }).then(canvas => {
             btn.disabled = false;
-            btn.innerHTML = "📸 一键出图";
+            btn.innerHTML = "一键出图";
 
             const imgData = canvas.toDataURL('image/png');
             
@@ -847,7 +847,7 @@
             console.error("生成图片失败:", err);
             alert("生成图片失败，请检查网络后重试。");
             btn.disabled = false;
-            btn.innerHTML = "📸 一键出图";
+            btn.innerHTML = "一键出图";
         });
     }
 
